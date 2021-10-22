@@ -1,5 +1,6 @@
 import pygame
 from pygame.locals import *
+from random import randint
 
 pygame.init()
 pygame.font.init()
@@ -20,11 +21,22 @@ questionImg = "Images/question 1.png"
 botaoImg = "Images/botaoJogar.png"
 voltarImg = "Images/voltarBotao.png"
 
+handwashIcon = "Images/handwashIcon.png"
+maosIcon = "Images/maosIcon.png"
+maskIcon = "Images/maskIcon.png"
+vaccineIcon = "Images/vaccineIcon.png"
+virusIcon = "Images/virusIcon.png"
+
 mutadoCarregado = pygame.image.load(mutadoImg)
 volumeCarregado = pygame.image.load(volumeImg)
 questionCarregado = pygame.image.load(questionImg)
 botaoCarregado = pygame.image.load(botaoImg)
 voltarCarregado = pygame.image.load(voltarImg)
+
+
+imagensQueda = [[pygame.image.load(handwashIcon), randint(64, 1016), randint(-1000, -100)], [pygame.image.load(maosIcon), randint(64, 1016),
+                randint(-1000, -100)], [pygame.image.load(maskIcon), randint(64, 1016), randint(-1000, -100)], [pygame.image.load(vaccineIcon), randint(64, 1016), randint(-1000, -100)],
+                [pygame.image.load(virusIcon), randint(64, 1016), randint(-1000, -100)]]
 
 # CORES
 azul = (100, 181, 246)
@@ -57,6 +69,14 @@ def carregarMenu():
                 telaAtual = 2
 
     screen.fill(azul)
+
+    for i in imagensQueda:
+        screen.blit(i[0], (i[1], i[2]))
+        i[2] += 0.4
+        if i[2] > 780:
+            i[1] = randint(64, 1016)
+            i[2] = randint(-1000, -100)
+
     screen.blit(titulo, (540 - titulo.get_width() / 2, 78))
     if not mutado:
         screen.blit(volumeCarregado, (34, 636))
