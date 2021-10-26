@@ -1,4 +1,5 @@
 import pygame
+import pygame.threads
 from pygame.locals import *
 from random import randint, shuffle
 
@@ -14,6 +15,7 @@ telaAtual = 0
 mutado = False
 pontos = 0
 jogoNovo = True
+selecionados = []
 
 # IMAGENS
 mutadoImg = "Images/mutado.png"
@@ -30,7 +32,11 @@ virusIcon = "Images/virusIcon.png"
 
 intrucoesImg = "Images/instrucoes.png"
 
-cardsImg = ["Images/Card 1.png", "Images/Card 2.png", "Images/Card 3.png", "Images/Card 4.png", "Images/Card 5.png", "Images/Card 6.png", "Images/Card 7.png", "Images/Card 8.png"]
+cardsImg = ["Images/Card 1.png", "Images/Card 2.png", "Images/Card 3.png", "Images/Card 4.png", "Images/Card 5.png", "Images/Card 6.png", "Images/Card 7.png", "Images/Card 8.png",
+            "Images/Card 1.png", "Images/Card 2.png", "Images/Card 3.png", "Images/Card 4.png", "Images/Card 5.png", "Images/Card 6.png", "Images/Card 7.png", "Images/Card 8.png"]
+
+cardsGame = cardsImg.copy()
+
 cardLaranjaImg = "Images/cardLaranja.png"
 
 mutadoCarregado = pygame.image.load(mutadoImg)
@@ -45,12 +51,7 @@ imagensQueda = [[pygame.image.load(handwashIcon), randint(64, 1016), randint(-10
                 randint(-1000, -100)], [pygame.image.load(maskIcon), randint(64, 1016), randint(-1000, -100)], [pygame.image.load(vaccineIcon), randint(64, 1016), randint(-1000, -100)],
                 [pygame.image.load(virusIcon), randint(64, 1016), randint(-1000, -100)]]
 
-cardsCarregados = []
 laranjaCarregado = pygame.image.load(cardLaranjaImg)
-
-for i in cardsImg:
-    cardsCarregados.append(pygame.image.load(i))
-    cardsCarregados.append(pygame.image.load(i))
 
 # CORES
 azul = (100, 181, 246)
@@ -134,10 +135,14 @@ def carregarJogo():
     global mutado
     global pontos
     global jogoNovo
+    global selecionados
+    global cardsGame
+
     pontosText = my_font40.render(f"Pontos: {pontos}", True, white)
 
+
     if jogoNovo:
-        shuffle(cardsCarregados)
+        shuffle(cardsGame)
         jogoNovo = False
 
     for evento in pygame.event.get():
@@ -145,29 +150,63 @@ def carregarJogo():
             JogoAtivo = False
 
         if evento.type == pygame.MOUSEBUTTONDOWN:
-            pontos += 1
             (mouseX, mouseY) = pygame.mouse.get_pos()
             if (34 < mouseX < 98) and (20 < mouseY < 84):
                 telaAtual = 0
                 jogoNovo = True
+                pontos = 0
+                cardsGame = cardsImg.copy()
             if (34 < mouseX < 98) and (636 < mouseY < 700):
                 mutado = not mutado
+
+            for v in range(0, 16):
+                if cardsGame[v] != "Images/Correct.png":
+                    if v > 7:
+                        if (49 + ((v - 8) * 126)) < mouseX < (149 + ((v - 8) * 126)) and (314 < mouseY < 464):
+                            if v in selecionados:
+                                selecionados.remove(v)
+                            elif len(selecionados) < 2:
+                                selecionados.append(v)
+                    else:
+                        if (49 + (v * 126)) < mouseX < (149 + (v * 126)) and (153 < mouseY < 303):
+                            if v in selecionados:
+                                selecionados.remove(v)
+                            elif len(selecionados) < 2:
+                                selecionados.append(v)
 
     screen.fill(azul)
     screen.blit(voltarCarregado, (34, 20))
     screen.blit(pontosText, (540 - pontosText.get_width() / 2, 16))
 
-    for i in range(0, len(cardsCarregados)):
+    for i in range(0, len(cardsGame)):
         if i > 7:
-            screen.blit(cardsCarregados[i], (49 + ((i-8) * 126), 314))
-            #screen.blit(laranjaCarregado, (49 + ((i - 8) * 126), 314))
+            if i in selecionados or cardsGame[i] == "Images/Correct.png":
+                screen.blit(pygame.image.load(cardsGame[i]), (49 + ((i - 8) * 126), 314))
+            else:
+                screen.blit(laranjaCarregado, (49 + ((i - 8) * 126), 314))
         else:
-            screen.blit(cardsCarregados[i], (49 + (i * 126), 153))
+            if i in selecionados or cardsGame[i] == "Images/Correct.png":
+                screen.blit(pygame.image.load(cardsGame[i]), (49 + (i * 126), 153))
+            else:
+                screen.blit(laranjaCarregado, (49 + (i * 126), 153))
 
     if not mutado:
         screen.blit(volumeCarregado, (34, 636))
     else:
         screen.blit(mutadoCarregado, (34, 636))
+
+    pygame.display.update()
+
+    if len(selecionados) == 2:
+        if cardsGame[selecionados[0]] == cardsGame[selecionados[1]]:
+            pygame.time.delay(1000)
+            pontos += 100
+            cardsGame[selecionados[0]] = "Images/Correct.png"
+            cardsGame[selecionados[1]] = "Images/Correct.png"
+            selecionados = []
+        else:
+            pygame.time.delay(1000)
+            selecionados = []
 
     pygame.display.update()
 
