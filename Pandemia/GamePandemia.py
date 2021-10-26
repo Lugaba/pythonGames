@@ -1,6 +1,6 @@
 import pygame
 from pygame.locals import *
-from random import randint
+from random import randint, shuffle
 
 pygame.init()
 pygame.font.init()
@@ -13,6 +13,7 @@ JogoAtivo = True
 telaAtual = 0
 mutado = False
 pontos = 0
+jogoNovo = True
 
 # IMAGENS
 mutadoImg = "Images/mutado.png"
@@ -27,16 +28,29 @@ maskIcon = "Images/maskIcon.png"
 vaccineIcon = "Images/vaccineIcon.png"
 virusIcon = "Images/virusIcon.png"
 
+intrucoesImg = "Images/instrucoes.png"
+
+cardsImg = ["Images/Card 1.png", "Images/Card 2.png", "Images/Card 3.png", "Images/Card 4.png", "Images/Card 5.png", "Images/Card 6.png", "Images/Card 7.png", "Images/Card 8.png"]
+cardLaranjaImg = "Images/cardLaranja.png"
+
 mutadoCarregado = pygame.image.load(mutadoImg)
 volumeCarregado = pygame.image.load(volumeImg)
 questionCarregado = pygame.image.load(questionImg)
 botaoCarregado = pygame.image.load(botaoImg)
 voltarCarregado = pygame.image.load(voltarImg)
+instrucoesCarregado = pygame.image.load(intrucoesImg)
 
 
 imagensQueda = [[pygame.image.load(handwashIcon), randint(64, 1016), randint(-1000, -100)], [pygame.image.load(maosIcon), randint(64, 1016),
                 randint(-1000, -100)], [pygame.image.load(maskIcon), randint(64, 1016), randint(-1000, -100)], [pygame.image.load(vaccineIcon), randint(64, 1016), randint(-1000, -100)],
                 [pygame.image.load(virusIcon), randint(64, 1016), randint(-1000, -100)]]
+
+cardsCarregados = []
+laranjaCarregado = pygame.image.load(cardLaranjaImg)
+
+for i in cardsImg:
+    cardsCarregados.append(pygame.image.load(i))
+    cardsCarregados.append(pygame.image.load(i))
 
 # CORES
 azul = (100, 181, 246)
@@ -105,6 +119,7 @@ def carregarManual():
 
     screen.fill(azul)
     screen.blit(tituloManual, (540 - tituloManual.get_width() / 2, 8))
+    screen.blit(instrucoesCarregado, (40, 182))
     screen.blit(voltarCarregado, (34, 20))
     if not mutado:
         screen.blit(volumeCarregado, (34, 636))
@@ -118,7 +133,12 @@ def carregarJogo():
     global telaAtual
     global mutado
     global pontos
+    global jogoNovo
     pontosText = my_font40.render(f"Pontos: {pontos}", True, white)
+
+    if jogoNovo:
+        shuffle(cardsCarregados)
+        jogoNovo = False
 
     for evento in pygame.event.get():
         if evento.type == QUIT:
@@ -129,12 +149,21 @@ def carregarJogo():
             (mouseX, mouseY) = pygame.mouse.get_pos()
             if (34 < mouseX < 98) and (20 < mouseY < 84):
                 telaAtual = 0
+                jogoNovo = True
             if (34 < mouseX < 98) and (636 < mouseY < 700):
                 mutado = not mutado
 
     screen.fill(azul)
     screen.blit(voltarCarregado, (34, 20))
     screen.blit(pontosText, (540 - pontosText.get_width() / 2, 16))
+
+    for i in range(0, len(cardsCarregados)):
+        if i > 7:
+            screen.blit(cardsCarregados[i], (49 + ((i-8) * 126), 314))
+            #screen.blit(laranjaCarregado, (49 + ((i - 8) * 126), 314))
+        else:
+            screen.blit(cardsCarregados[i], (49 + (i * 126), 153))
+
     if not mutado:
         screen.blit(volumeCarregado, (34, 636))
     else:
