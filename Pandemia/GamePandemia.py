@@ -180,7 +180,8 @@ def carregarJogo():
     screen.blit(voltarCarregado, (34, 20))
     screen.blit(pontosText, (540 - pontosText.get_width() / 2, 16))
     if imagemExp != "":
-        screen.blit(pygame.image.load(imagemExp), (175, 484))
+        screen.blit(pygame.image.load("Images/Card 1Exp.png"), (175, 484))
+        #screen.blit(pygame.image.load(imagemExp), (175, 484))
 
     for i in range(0, len(cardsGame)):
         if i > 7:
@@ -211,7 +212,6 @@ def carregarJogo():
                     imagemExp += cardsGame[selecionados[0]][i] + "Exp"
                     continue
                 imagemExp += cardsGame[selecionados[0]][i]
-            print(imagemExp)
             cardsGame[selecionados[0]] = "Images/Correct.png"
             cardsGame[selecionados[1]] = "Images/Correct.png"
             selecionados = []
