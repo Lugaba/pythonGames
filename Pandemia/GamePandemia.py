@@ -65,6 +65,11 @@ my_font40 = pygame.font.Font("Fonts/SeymourOne-Regular.ttf", 40)
 titulo = my_font.render("PANDEMIA", True, white)
 tituloManual = my_font80.render("Como jogar?", True, white)
 
+# musica
+pygame.mixer.music.load("Sounds/BgMusic.mp3")
+pygame.mixer.music.play(-1) # -1 garante música repetidas vezes
+pygame.mixer.music.set_volume(0.3)
+
 
 def carregarMenu():
     global JogoAtivo
@@ -96,8 +101,10 @@ def carregarMenu():
     screen.blit(titulo, (540 - titulo.get_width() / 2, 78))
     if not mutado:
         screen.blit(volumeCarregado, (34, 636))
+        pygame.mixer.music.unpause()
     else:
         screen.blit(mutadoCarregado, (34, 636))
+        pygame.mixer.music.pause()
     screen.blit(questionCarregado, (128, 636))
     screen.blit(botaoCarregado, (415, 360))
 
@@ -120,13 +127,16 @@ def carregarManual():
                 mutado = not mutado
 
     screen.fill(azul)
+
     screen.blit(tituloManual, (540 - tituloManual.get_width() / 2, 8))
     screen.blit(instrucoesCarregado, (40, 182))
     screen.blit(voltarCarregado, (34, 20))
     if not mutado:
         screen.blit(volumeCarregado, (34, 636))
+        pygame.mixer.music.unpause()
     else:
         screen.blit(mutadoCarregado, (34, 636))
+        pygame.mixer.music.pause()
 
     pygame.display.update()
 
@@ -177,6 +187,9 @@ def carregarJogo():
                                 selecionados.append(v)
 
     screen.fill(azul)
+
+
+
     screen.blit(voltarCarregado, (34, 20))
     screen.blit(pontosText, (540 - pontosText.get_width() / 2, 16))
     if imagemExp != "":
@@ -196,8 +209,10 @@ def carregarJogo():
 
     if not mutado:
         screen.blit(volumeCarregado, (34, 636))
+        pygame.mixer.music.unpause()
     else:
         screen.blit(mutadoCarregado, (34, 636))
+        pygame.mixer.music.pause()
 
     pygame.display.update()
 
