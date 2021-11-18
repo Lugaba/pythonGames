@@ -25,11 +25,14 @@ questionImg = "Images/question 1.png"
 botaoImg = "Images/botaoJogar.png"
 voltarImg = "Images/voltarBotao.png"
 
-handwashIcon = "Images/handwashIcon.png"
+skullIcon = "Images/skull.png"
 maosIcon = "Images/maosIcon.png"
 maskIcon = "Images/maskIcon.png"
 vaccineIcon = "Images/vaccineIcon.png"
 virusIcon = "Images/virusIcon.png"
+pandemicIcon = "Images/pandemic.png"
+idosoIcon = "Images/idosos.png"
+sintomasIcon = "Images/sintomas.png"
 
 intrucoesImg = "Images/instrucoes.png"
 
@@ -48,9 +51,14 @@ voltarCarregado = pygame.image.load(voltarImg)
 instrucoesCarregado = pygame.image.load(intrucoesImg)
 
 
-imagensQueda = [[pygame.image.load(handwashIcon), randint(64, 1016), randint(-1000, -100)], [pygame.image.load(maosIcon), randint(64, 1016),
-                randint(-1000, -100)], [pygame.image.load(maskIcon), randint(64, 1016), randint(-1000, -100)], [pygame.image.load(vaccineIcon), randint(64, 1016), randint(-1000, -100)],
-                [pygame.image.load(virusIcon), randint(64, 1016), randint(-1000, -100)]]
+imagensQueda = [[pygame.image.load(skullIcon), randint(64, 1016), randint(-2000, -100)],
+                [pygame.image.load(maosIcon), randint(64, 1016),randint(-2000, -100)],
+                [pygame.image.load(maskIcon), randint(64, 1016), randint(-2000, -100)],
+                [pygame.image.load(vaccineIcon), randint(64, 1016), randint(-2000, -100)],
+                [pygame.image.load(virusIcon), randint(64, 1016), randint(-2000, -100)],
+                [pygame.image.load(pandemicIcon), randint(64, 1016), randint(-2000, -100)],
+                [pygame.image.load(idosoIcon), randint(64, 1016), randint(-2000, -100)],
+                [pygame.image.load(sintomasIcon), randint(64, 1016), randint(-2000, -100)]]
 
 laranjaCarregado = pygame.image.load(cardLaranjaImg)
 
