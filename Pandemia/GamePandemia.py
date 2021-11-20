@@ -176,7 +176,7 @@ def carregarJogo():
 
         if evento.type == pygame.MOUSEBUTTONDOWN:
             (mouseX, mouseY) = pygame.mouse.get_pos()
-            if ((34 < mouseX < 98) and (20 < mouseY < 84)) or (corretos == len(cardsGame) and ((628 < mouseX < 877) and (471 < mouseY < 569))):
+            if ((34 < mouseX < 98) and (20 < mouseY < 84)) or (corretos == len(cardsGame) and ((415 < mouseX < 664) and (471 < mouseY < 569))):
                 telaAtual = 0
                 jogoNovo = True
                 pontos = 0
@@ -185,13 +185,6 @@ def carregarJogo():
                 corretos = 0
             if (34 < mouseX < 98) and (636 < mouseY < 700):
                 mutado = not mutado
-
-            if corretos == len(cardsGame) and ((203 < mouseX < 301) and (471 < mouseY < 569)):
-                jogoNovo = True
-                pontos = 0
-                imagemExp = ""
-                cardsGame = cardsImg.copy()
-                corretos = 0
 
             for v in range(0, 16):
                 if cardsGame[v] != "Images/Correct.png":
@@ -218,8 +211,7 @@ def carregarJogo():
         pygame.mixer.music.pause()
 
     if corretos == len(cardsGame):
-        screen.blit(pygame.image.load(menuButtonImg), (628, 471))
-        screen.blit(botaoCarregado, (203, 471))
+        screen.blit(pygame.image.load(menuButtonImg), (415, 471))
         screen.blit(pygame.image.load(vitoriaImg), (40, 46))
         pygame.display.update()
     else:
