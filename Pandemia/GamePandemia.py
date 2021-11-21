@@ -18,6 +18,7 @@ jogoNovo = True
 selecionados = []
 imagemExp = ""
 corretos = 0
+ultimo = ""
 
 # IMAGENS
 mutadoImg = "Images/mutado.png"
@@ -161,8 +162,7 @@ def carregarJogo():
     global cardsGame
     global imagemExp
     global corretos
-
-    acabou = False
+    global ultimo
 
     pontosText = my_font40.render(f"Pontos: {pontos}", True, white)
 
@@ -176,7 +176,7 @@ def carregarJogo():
 
         if evento.type == pygame.MOUSEBUTTONDOWN:
             (mouseX, mouseY) = pygame.mouse.get_pos()
-            if ((34 < mouseX < 98) and (20 < mouseY < 84)) or (corretos == len(cardsGame) and ((415 < mouseX < 664) and (471 < mouseY < 569))):
+            if (34 < mouseX < 98) and (20 < mouseY < 84):
                 telaAtual = 0
                 jogoNovo = True
                 pontos = 0
@@ -210,13 +210,9 @@ def carregarJogo():
         screen.blit(mutadoCarregado, (34, 636))
         pygame.mixer.music.pause()
 
-    if corretos == len(cardsGame):
-        screen.blit(pygame.image.load(menuButtonImg), (415, 471))
-        screen.blit(pygame.image.load(vitoriaImg), (40, 46))
-        pygame.display.update()
-    else:
-        screen.blit(voltarCarregado, (34, 20))
-        screen.blit(pontosText, (540 - pontosText.get_width() / 2, 16))
+    screen.blit(voltarCarregado, (34, 20))
+    screen.blit(pontosText, (540 - pontosText.get_width() / 2, 16))
+    if corretos != len(cardsGame):
         if imagemExp != "":
             screen.blit(pygame.image.load(imagemExp), (175, 484))
 
@@ -240,7 +236,7 @@ def carregarJogo():
                 pygame.time.delay(1000)
                 pontos += 100
                 for i in range(0, len(cardsGame[selecionados[0]])):
-                    if i < len(cardsGame[selecionados[0]])-2 and cardsGame[selecionados[0]][i + 1] == ".":
+                    if i < len(cardsGame[selecionados[0]]) - 2 and cardsGame[selecionados[0]][i + 1] == ".":
                         imagemExp += cardsGame[selecionados[0]][i] + "Exp"
                         continue
                     imagemExp += cardsGame[selecionados[0]][i]
@@ -253,6 +249,12 @@ def carregarJogo():
                 selecionados = []
 
         pygame.display.update()
+    else:
+        screen.blit(pygame.image.load(imagemExp), (175, 484))
+        screen.blit(pygame.image.load(vitoriaImg), (40, 143))
+        pygame.display.update()
+
+
 
 while JogoAtivo:
     if telaAtual == 0:
